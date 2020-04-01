@@ -63,11 +63,24 @@ public class UserServicelmpl implements IUserService {
             //开始检查
             if (Const.USERNAME.equals(str)) {
                 int resultCount = userMapper.checkUsername(str);
+                if (resultCount > 0 ) {
+                    return ServerResponse.createByErrorMessage("用户名已存在");
+
+                }
 
             }
+
+            if (Const.EMAIL.equals(type)) {
+                int resultCount = userMapper.checkEmail(str);
+                if (resultCount > 0 ) {
+                    return ServerResponse.createByErrorMessage("email已存在");
+
+                }
+            }
+
         } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }
-        return null;
+        return ServerResponse.crateBySuccessMessage("校验成功");
     }
 }
