@@ -36,20 +36,22 @@ public class UserServicelmpl implements IUserService {
 
     }
 
-    public ServerResponse<User> register(User user) {
-        int resultCount = userMapper.checkUsername(user.getUsername());
-        if (resultCount > 0) {
-            return ServerResponse.createByErrorMessage("用户名已存在");
+    public ServerResponse<String> register(User user) {
+
+        ServerResponse validResponse = this.checkValid(user.getUsername(),Const.USERNAME);
+        if (!validResponse.isSuccess()) {
+            return validResponse;
         }
 
-        resultCount = userMapper.checkEmail(user.getEmail());
-        if (resultCount > 0) {
-            return ServerResponse.createByErrorMessage("email已存在");
+        validResponse = this.checkValid(user.getEmail(),Const.EMAIL);
+        if (!validResponse.isSuccess()) {
+            return validResponse;
         }
+
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
-        resultCount = userMapper.insert(user);
+        int resultCount = userMapper.insert(user);
 
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
@@ -58,7 +60,7 @@ public class UserServicelmpl implements IUserService {
         return ServerResponse.crateBySuccessMessage("注册成功");
     }
 
-    public ServerResponse<String> checkVail(String str, String type) {
+    public ServerResponse<String> checkValid(String str, String type) {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(type)) {
             //开始检查
             if (Const.USERNAME.equals(str)) {

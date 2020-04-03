@@ -43,21 +43,27 @@ public class UserController {
     }
 
     /**
-     *用户退出
+     * 用户退出
      *
      * @param session
      * @return
      */
     @RequestMapping(value = "logout.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> logout(HttpSession session) {
+    public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.crateBySuccess();
     }
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> register(User user) {
+    public ServerResponse<String> register(User user) {
         return iUserService.register(user);
     }
-}
+
+    @RequestMapping(value = "check_valid.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> checkValid(String str, String type) {
+        return iUserService.checkValid(str, type);
+    }
+} //Class End
