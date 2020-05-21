@@ -320,4 +320,11 @@
         where username = #{username}
     </select>
 
+    <select id="selectQuestionByUsername" parameterType="String" resultType="String">
+        SELECT
+        question
+        from mmall_user
+        where username = #{username}
+    </select>
+
 </mapper>

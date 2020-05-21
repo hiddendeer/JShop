@@ -38,12 +38,12 @@ public class UserServicelmpl implements IUserService {
 
     public ServerResponse<String> register(User user) {
 
-        ServerResponse validResponse = this.checkValid(user.getUsername(),Const.USERNAME);
+        ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
 
-        validResponse = this.checkValid(user.getEmail(),Const.EMAIL);
+        validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
@@ -65,7 +65,7 @@ public class UserServicelmpl implements IUserService {
             //开始检查
             if (Const.USERNAME.equals(str)) {
                 int resultCount = userMapper.checkUsername(str);
-                if (resultCount > 0 ) {
+                if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("用户名已存在");
 
                 }
@@ -74,7 +74,7 @@ public class UserServicelmpl implements IUserService {
 
             if (Const.EMAIL.equals(type)) {
                 int resultCount = userMapper.checkEmail(str);
-                if (resultCount > 0 ) {
+                if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("email已存在");
 
                 }
@@ -85,4 +85,21 @@ public class UserServicelmpl implements IUserService {
         }
         return ServerResponse.crateBySuccessMessage("校验成功");
     }
-}
+
+    public ServerResponse selectQuestion(String username) {
+        ServerResponse validResponse = this.checkValid(username, Const.CURRENT_USER);
+        if (validResponse.isSuccess()) {
+            return ServerResponse.createByErrorMessage("用户名不存在");
+        }
+
+        String question = userMapper.selectQuestionByUsername(username);
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(question)) {
+            return ServerResponse.crateBySuccess(question);
+        }
+
+        return ServerResponse.createByErrorMessage("找回密码的问题是空的");
+
+    }
+
+} //Class End
