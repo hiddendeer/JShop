@@ -10,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service("iUserService")
 public class UserServicelmpl implements IUserService {
 
@@ -100,6 +102,17 @@ public class UserServicelmpl implements IUserService {
 
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
 
+    }
+
+
+    public ServerResponse<String> checkAnswer(String username, String question, String answer) {
+        int resultCount = userMapper.checkAnswer(username, question, answer);
+        if (resultCount>0) {
+            //说明问题及问题答案是这个用户的，并且是正确的
+            String forgetToken = UUID.randomUUID().toString();
+
+        }
+        return null;
     }
 
 } //Class End
