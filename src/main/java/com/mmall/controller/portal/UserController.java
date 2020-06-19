@@ -87,8 +87,10 @@ public class UserController {
         return iUserService.selectQuestion(username);
     }
 
+    @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.GET)
+    @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username, String question,String answer){
-        return null;
+        return iUserService.checkAnswer(username,question,answer);
     }
 
 

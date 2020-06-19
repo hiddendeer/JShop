@@ -15,7 +15,29 @@ public class TokenCache {
             .build(new CacheLoader<String, String>() {
                 @Override
                 public String load(String s) throws Exception {
-                    return null;
+                    return "null";
                 }
             });
+
+    public static void setKey(String key,String value)
+    {
+        localCache.put(key,value);
+    }
+
+    public static String getKey(String key) {
+        String value = null;
+        try {
+            value = localCache.get(key);
+            if ("null".equals(value)) {
+                return null;
+            }
+            return value;
+
+        } catch (Exception e) {
+            logger.error("localCache get error",e);
+        }
+
+        return null;
+    }
+
 }

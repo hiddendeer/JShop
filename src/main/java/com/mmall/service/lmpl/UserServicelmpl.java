@@ -2,6 +2,7 @@ package com.mmall.service.lmpl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
+import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.service.IUserService;
 import com.mmall.pojo.User;
@@ -110,9 +111,11 @@ public class UserServicelmpl implements IUserService {
         if (resultCount>0) {
             //说明问题及问题答案是这个用户的，并且是正确的
             String forgetToken = UUID.randomUUID().toString();
+            TokenCache.setKey("token_"+username,forgetToken);
+            return ServerResponse.crateBySuccess(forgetToken);
 
         }
-        return null;
+        return ServerResponse.createByErrorMessage("问题的答案错误");
     }
 
 } //Class End
